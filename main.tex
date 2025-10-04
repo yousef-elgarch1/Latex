@@ -1,0 +1,85 @@
+\documentclass[12pt,french,latin.medieval,titlepage]{report}
+\usepackage{Preamble}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[light, largesmallcaps]{kpfonts}
+\usepackage{lipsum}
+\usepackage{array}
+
+
+\newcolumntype{R}[1]{>{\centering\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\centering\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+
+
+
+\begin{document}
+\baselineskip=18pt
+
+\subfile{firstpage}
+
+
+\subfile{Acknowledgments}
+
+\subfile{resume}
+
+\subfile{abstract}
+
+
+
+
+
+\restoregeometry
+
+\thispagestyle{numberonly}
+\subfile{abreviations}
+\newpage
+\baselineskip=20pt
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+\listoftables
+\newpage
+\addcontentsline{toc}{chapter}{Table des figures}
+\listoffigures
+
+\newpage
+\baselineskip=20pt
+\addcontentsline{toc}{chapter}{Table des matières}
+
+\tableofcontents
+\subfile{introduction}
+\chapter{Contexte général du projet}
+\subfile{1-Introduction}
+
+\chapter{Etude et Analyse}
+\subfile{2-Methods}
+
+\chapter{Étude conceptuelle et architecturale}
+\subfile{3-Results}
+
+\chapter{Réalisation et Mise en œuvre}
+\subfile{4-Discussion}
+
+
+
+
+
+
+%\chapter{Project realization and results}
+%\subfile{5-Conclusion}
+
+\addcontentsline{toc}{chapter}{Conclusion Générale}
+\subfile{generalconclusion}
+
+%\addcontentsline{toc}{chapter}{Glossary}
+%\subfile{Glossary}
+
+\nocite{*}
+%choix du style de la biblio
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{bibliography.bib}
+% voir wiki pour plus d'information sur la syntaxe des entrées d'une bibliographie
+\end{document}
+

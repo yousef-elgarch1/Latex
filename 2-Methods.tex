@@ -1,0 +1,270 @@
+Les principaux objectifs de ce chapitre sont les suivants :
+
+— Exploration des technologies de signature numérique et de leurs caractéristiques.
+
+— Analyse des services offerts par l'API REST de DocuSign.
+
+
+
+— Introduction à la sécurité des données dans le contexte des signatures numériques.
+
+— Examen des avantages de l'intégration des API pour l'amélioration des processus métiers.
+
+— Analyse et identification des besoins spécifiques du projet.
+
+\newpage
+\section{Introduction}
+\quad Ce chapitre vise à présenter le contexte technique du projet. Il explore les technologies de signature numérique et leurs caractéristiques essentielles. Nous analyserons les services offerts par l'API REST de DocuSign, en mettant en lumière ses principales fonctionnalités et son intégration dans notre application web. Nous étudierons également les concepts de digitalisation et d'automatisation des processus administratifs, en soulignant les bénéfices tels que la réduction des erreurs et l'amélioration de la traçabilité.
+
+De plus, nous introduirons les principes de la sécurité des données dans le contexte des signatures numériques, en expliquant l'importance de mesures comme le cryptage et l'authentification à deux facteurs. Nous examinerons les avantages de l'intégration des API pour l'amélioration des processus métiers, en particulier comment elles facilitent la communication entre différents systèmes et applications. Enfin, nous analyserons et identifierons les besoins spécifiques de notre projet, définissant les exigences fonctionnelles et techniques, ainsi que les attentes des utilisateurs finaux.
+
+
+\section{Technologies de Signature Numérique}
+\subsection{ Définition des Signatures Numériques}
+
+Les signatures numériques sont une forme avancée de signature électronique qui utilise des techniques de cryptographie pour garantir l'intégrité, l'authenticité et la non-répudiation des documents numériques. Contrairement aux signatures électroniques simples, qui peuvent inclure des images ou des signatures scannées, les signatures numériques reposent sur des algorithmes cryptographiques pour créer une empreinte numérique unique liée de manière sécurisée à un signataire spécifique. Cette technologie repose sur l'utilisation de clés publiques et privées, où la clé privée est utilisée pour signer un document et la clé publique pour vérifier la signature.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/image-1024x555.png}
+\end{center}
+\caption{Processus de la signature numérique}
+\end{figure}
+
+\subsubsection{Principe de Hashage:}
+Le principe fondamental des signatures numériques repose sur le concept de hachage. Lorsqu'un document est signé numériquement, un algorithme de hachage génère un résumé cryptographique du document, connu sous le nom de hachage ou empreinte numérique. Ce résumé est une chaîne de caractères unique et de longueur fixe, créée en appliquant une fonction de hachage (comme SHA-256) au contenu du document. Ce résumé est ensuite chiffré à l'aide de la clé privée du signataire pour produire la signature numérique.
+
+Le processus se déroule en plusieurs étapes :
+\begin{itemize}
+
+\item Hachage :
+L'algorithme de hachage traite le contenu du document pour créer une empreinte unique.
+\item Chiffrement : 
+Cette empreinte est ensuite chiffrée avec la clé privée du signataire pour créer la signature numérique.
+\item Vérification : 
+Lors de la réception du document signé, la signature est vérifiée en déchiffrant l'empreinte numérique à l'aide de la clé publique du signataire. L'empreinte obtenue est alors comparée à celle recalculée à partir du document reçu. Si les empreintes concordent, la signature est validée, et il est confirmé que le document n'a pas été altéré depuis sa signature.
+\end{itemize}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/hasahge.png}
+\end{center}
+\caption{Principe de Hashage}
+\end{figure}
+
+Cette méthode assure que toute modification ultérieure du document entraînera une discordance entre les empreintes, permettant ainsi de détecter toute altération. En utilisant des clés cryptographiques et des algorithmes de hachage, les signatures numériques fournissent une garantie robuste de l'intégrité et de l'authenticité du document signé, tout en offrant une preuve irréfutable de l'identité du signataire.
+
+\subsection{Caractéristiques Essentielles des Signatures Numériques}
+
+Les signatures numériques possèdent plusieurs caractéristiques essentielles qui les distinguent des signatures électroniques traditionnelles. Tout d'abord, l'authenticité est un élément clé des signatures numériques. Elles garantissent que la personne qui signe est bien celle qu'elle prétend être, grâce à l'utilisation de certificats numériques délivrés par des autorités de certification (CA) reconnues. Ces certificats associent la clé publique du signataire à son identité, permettant ainsi de valider l'authenticité de la signature.
+
+Ensuite, l'intégrité du document est assurée par les signatures numériques. Lorsqu'un document est signé, un hachage (empreinte numérique) du document est créé. Ce hachage est ensuite chiffré avec la clé privée du signataire, formant la signature numérique. Toute modification ultérieure du document entraînera une discordance entre le hachage du document signé et celui du document modifié, permettant ainsi de détecter toute altération.
+
+Un autre aspect important est la non-répudiation. Une fois qu'un document est signé numériquement, le signataire ne peut pas nier avoir signé le document. Cette propriété est garantie par l'association unique de la signature avec la clé privée du signataire, ainsi que par le fait que le processus de signature est enregistré dans un journal sécurisé.
+
+Enfin, les certificats numériques jouent un rôle crucial dans le processus de signature. Ils sont délivrés par des autorités de certification (CA) et sont utilisés pour vérifier la validité de la clé publique du signataire, assurant ainsi que la signature est authentique.
+
+\subsection{ Fonctionnement et Avantages des Signatures Électroniques}
+
+Les signatures électroniques fonctionnent en utilisant des processus numériques pour signer des documents de manière sécurisée et efficace. Lorsqu'un document est signé électroniquement, un algorithme de hachage est appliqué pour créer un résumé cryptographique du document. Ce résumé est ensuite chiffré avec la clé privée du signataire, formant la signature numérique. Lorsque le document signé est reçu, la clé publique du signataire est utilisée pour déchiffrer la signature et vérifier le résumé cryptographique. En comparant ce résumé avec celui généré à partir du document reçu, il est possible de confirmer que le document n'a pas été modifié et que la signature est valide.
+
+Les avantages des signatures électroniques sont nombreux. Elles permettent une signature rapide et facile des documents, éliminant le besoin de l'impression, de la signature manuscrite et du renvoi physique des documents. Cela réduit les coûts associés à la gestion des documents papier, tels que les frais d'impression, de stockage et de courrier. De plus, elles offrent une accessibilité accrue en permettant de signer des documents de n'importe où et à tout moment, facilitant ainsi la collaboration et la gestion des documents à distance.
+
+En termes de sécurité, les signatures électroniques utilisent des technologies cryptographiques avancées pour offrir un niveau élevé de protection contre la fraude et les altérations de documents. Enfin, elles améliorent la traçabilité des transactions grâce à des processus de signature souvent enregistrés avec des horodatages et des journaux d'audit, permettant de suivre l'historique des modifications et des signatures. Ces caractéristiques démontrent pourquoi les signatures numériques sont devenues une norme dans les processus de gestion documentaire modernes.
+
+
+
+\section{DocuSign REST API}
+
+\subsection{Présentation de DocuSign}
+DocuSign est un leader mondial dans le domaine des signatures électroniques et de la gestion numérique des documents. Fondée en 2003, l’entreprise a développé une plateforme robuste permettant aux utilisateurs de signer des documents électroniquement de manière sécurisée et conforme. La solution de DocuSign facilite la transition des processus papier vers des processus numériques, offrant une alternative pratique et juridiquement valide pour la signature et la gestion des contrats.
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/docusign.png}
+\end{center}
+\caption{Le logo de DocuSign}
+\end{figure}
+
+
+\subsection{Services de DocuSign}
+
+DocuSign propose une gamme étendue de services pour répondre aux besoins variés des entreprises et des particuliers. Parmi ces services, on trouve l'envoi de documents à signer, qui permet aux utilisateurs de transmettre des documents à des signataires spécifiques, en définissant les emplacements de signature et en suivant le processus en temps réel. La gestion des enveloppes est une autre fonctionnalité clé, permettant de regrouper les documents et les informations sur les signataires dans un conteneur organisé. Les modèles de documents préconfigurés facilitent la gestion des transactions répétitives, en réduisant le temps nécessaire pour préparer les documents pour les signatures. En outre, des outils de suivi et de reporting offrent une visibilité détaillée sur le statut des documents et garantissent la conformité réglementaire.
+
+\subsection{Fonctionnement de l'API REST de DocuSign}
+L'API REST de DocuSign est une interface puissante permettant d'intégrer les fonctionnalités de signature électronique dans des applications personnalisées. Elle offre des capacités pour créer et gérer des enveloppes contenant des documents, en automatisant leur envoi et en définissant les rôles des signataires et les emplacements des signatures. Les utilisateurs peuvent suivre le statut des enveloppes et obtenir des informations détaillées sur les signataires, tout en récupérant les documents signés une fois le processus terminé. L'API permet également de configurer et de gérer des modèles de documents, simplifiant leur réutilisation. Cette intégration directe des signatures électroniques dans les applications permet d'améliorer l'efficacité des flux de travail tout en assurant la sécurité et la conformité.
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/What-is-REST.png}
+\end{center}
+\caption{Les principes de REST API}
+\end{figure}
+
+
+
+
+\subsection{Utilité de l'API REST pour le Projet}
+Pour notre projet, l'API REST de DocuSign est essentielle pour intégrer les fonctionnalités de signature électronique directement dans notre application web. L'automatisation du processus de signature des documents grâce à cette API non seulement optimise les flux de travail mais aussi assure une conformité avec les normes de signature électronique. En utilisant cette API, nous offrons une solution sécurisée et efficace pour la gestion des signatures, répondant aux exigences spécifiques de notre projet et améliorant globalement la gestion des processus administratifs.
+
+\section{Analyse et identifaction des besoins}
+\subsection{Besoins Fonctionnels}
+
+Les besoins fonctionnels de ce projet décrivent les fonctionnalités essentielles que l'application doit offrir pour répondre aux exigences des utilisateurs. Le système doit permettre aux utilisateurs de s'authentifier de manière sécurisée afin d'accéder aux différentes fonctionnalités du site, telles que l'envoi et la signature électronique de documents. Une fois connectés, les utilisateurs doivent pouvoir uploader des documents qui nécessitent une signature et gérer les signataires en déterminant un ordre spécifique pour la signature. En outre, le système doit inclure une fonctionnalité de suivi permettant de vérifier l'état de chaque document (signé, en attente, refusé) et d'envoyer des notifications aux utilisateurs lorsque des actions sont requises ou lorsqu'une signature a été complétée. L'objectif est de garantir une gestion fluide et transparente du processus de signature électronique tout en offrant une expérience utilisateur optimale.
+
+
+
+
+
+\subsection{Besoins Non Fonctionnels}
+
+Les besoins non fonctionnels de ce projet concernent les aspects qualitatifs du système, tels que la sécurité, la performance, et la compatibilité. Le système doit garantir une sécurité maximale, notamment par le chiffrement des communications via HTTPS et par la protection des données sensibles. En termes de performance, l'application doit être capable de gérer un grand nombre de demandes simultanées sans compromettre la vitesse ou la réactivité. De plus, elle doit être compatible avec les principaux navigateurs web et optimisée pour une utilisation sur mobile. La scalabilité est également un critère clé : le système doit pouvoir s'adapter à une augmentation du nombre d'utilisateurs sans nécessiter de modifications structurelles majeures. Enfin, l'interface utilisateur doit être intuitive, accessible, et conçue pour une utilisation facile, même par des utilisateurs non techniques, tout en garantissant une maintenance future facilitée grâce à un code bien documenté et modulaire.
+
+
+
+
+\subsection{Diagramme de cas d'utilisation}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-01 214352.png}
+\end{center}
+\caption{Diagramme de cas d’utilisation}
+\end{figure}
+
+
+
+
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|p{12cm}|}
+\hline
+\textbf{Cas d’utilisation} & Créer un Email 
+\\ \hline
+\textbf{Acteur} & Sender 
+\\ \hline
+\textbf{Description} & Le sender crée un email en spécifiant le sujet, le corps du message, les destinataires, leurs rôles, l'ordre de réception et le document à signer. 
+\\ \hline
+\textbf{Scénario} &
+\begin{enumerate}
+\item Le sender ouvre l'interface de création d'email.
+\item Le sender saisit le sujet de l'email.
+\item Le sender saisit le corps du message.
+\item Le sender ajoute les destinataires et spécifie leurs rôles.
+\item Le sender définit l'ordre de réception pour les destinataires.
+\item Le sender télécharge le document à signer.
+\item Le sender valide et sauvegarde l'email.
+\end{enumerate} 
+\\ \hline
+\end{tabular}
+\caption{Description du cas d’utilisation Créer un Email}
+\label{Description du cas d’utilisation Créer un Email}
+\end{table}
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|p{12cm}|}
+\hline
+\textbf{Cas d’utilisation} & Envoyer le Document \ \hline
+\textbf{Acteur} & Sender \\ \hline
+\textbf{Description} & Le sender envoie le document à signer aux destinataires dans l'ordre spécifié. \\ \hline
+\textbf{Scénario} &
+\begin{enumerate}
+\item Le sender valide l'email créé.
+\item Le sender clique sur le bouton d'envoi.
+\item Le système envoie les informations au backend.
+\item Le backend envoie les informations à l'API DocuSign.
+\item DocuSign envoie le document au premier destinataire.
+\end{enumerate} \\
+\hline
+\end{tabular}
+\caption{Description du cas d’utilisation Envoyer le Document}
+\label{Description du cas d’utilisation Envoyer le Document}
+\end{table}
+
+
+
+
+
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|p{12cm}|}
+\hline
+\textbf{Cas d’utilisation} & Signer le Document \\ \hline
+\textbf{Acteur} & Recipient \\ \hline
+\textbf{Description} & Le destinataire signe le document reçu via l'interface DocuSign. \\ \hline
+\textbf{Scénario} &
+\begin{enumerate}
+\item Le destinataire visualise le document dans l'interface DocuSign.
+\item Le destinataire signe électroniquement le document.
+\item DocuSign enregistre la signature et passe au destinataire suivant si applicable.
+\end{enumerate} \\
+\hline
+\end{tabular}
+\caption{Description du cas d’utilisation Signer le Document}
+\label{Description du cas d’utilisation Signer le Document}
+\end{table}
+
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|p{12cm}|}
+\hline
+\textbf{Cas d’utilisation} & Vérifier le Statut de l'Email \\ \hline
+\textbf{Acteur} & Sender \\ \hline
+\textbf{Description} & Le sender vérifie si l'email contenant le document a été envoyé et signé. \\
+\hline
+\textbf{Scénario} &
+\begin{enumerate}
+\item Le sender accède à l'interface de vérification de statut.
+\item Le sender saisit les détails de l'email à vérifier.
+\item Le système récupère les informations de statut du backend.
+\item Le sender visualise le statut de l'email (envoyé, en attente de signature, signé).
+\end{enumerene} \\ \hline
+\end{tabular}
+\caption{Description du cas d’utilisation Vérifier le Statut de l'Email}
+\label{Description du cas d’utilisation Vérifier le Statut de l'Email}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Conclusion}
+
+\quad Dans ce chapitre, nous avons réussi à définir les notions et les principes qui nous seront utiles pour réaliser notre projet. Nous avons également pu présenter une analyse détaillée des exigences de notre interface.
+
+
+
+
+
+

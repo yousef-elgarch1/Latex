@@ -1,0 +1,813 @@
+Les objectifs principaux de ce chapitre consistent à :\begin{itemize}
+    \item Présenter les différents outils utilisés.
+    \item Implémenter notre API et ses endpoints.
+    \item Implémentation de la partie frontend.
+    \item Présentation de la fonction app développée.
+    \item Présentation de l'Application "eREDAL signature".
+    \item Présentation des fonctions clés du backend.
+    \item Présentation des différents environnements de travail et du déploiement.
+\end{itemize}
+
+
+
+
+
+\newpage
+\section{Introduction}
+Dans ce chapitre, nous abordons la phase de réalisation du projet, qui consiste à mettre en pratique les concepts et les spécifications établis dans les chapitres précédents. Nous décrirons les différentes étapes et les choix technologiques effectués pour développer et mettre en œuvre la solution finale.
+
+
+\section{ Environnement de Développement}
+\subsection{Présentation des environnements de travail }
+
+Pour le développement du projet "eREDAL", deux environnements de développement distincts ont été utilisés, chacun répondant à des besoins spécifiques du projet. \textbf{IntelliJ IDEA} a été choisi pour le développement du backend, tandis que \textbf{Visual Studio Code (VS Code)} a été utilisé pour le développement du frontend.
+
+\textbf{IntelliJ IDEA} a été sélectionné pour sa richesse fonctionnelle et sa prise en charge avancée des technologies backend, en particulier pour les projets basés sur Node.js. Cet IDE complet offre une intégration étroite avec les systèmes de gestion de base de données, facilitant ainsi les opérations de développement et de débogage. IntelliJ IDEA propose également une gestion des dépendances robuste, ce qui est crucial pour la configuration et l'exécution du serveur backend du projet.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=4cm]{images-REDAL/IntelliJ_IDEA_logo-1024x1024.png}
+\end{center}
+\caption{IntelliJ IDEA's logo}
+\end{figure}
+
+
+D'autre part, \textbf{Visual Studio Code (VS Code)} a été choisi pour le développement du frontend en raison de sa légèreté, de sa flexibilité et de ses puissantes fonctionnalités d'édition. VS Code est particulièrement adapté pour le développement en React.js grâce à son excellent support des technologies web modernes et à sa vaste collection d'extensions. Son interface utilisateur intuitive et ses fonctionnalités telles que l'auto-complétion et le débogage facilitent le développement et l'optimisation du code frontend.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=4cm]{images-REDAL/vs.png}
+\end{center}
+\caption{VS code's logo}
+\end{figure}
+
+
+
+
+
+
+\subsection{Configuration des environnements de développement}
+La configuration des environnements de développement a été soigneusement réalisée pour assurer une productivité maximale et une gestion efficace du code.
+
+
+
+\subsubsection{Installation des extensions nécessaires}
+Pour optimiser l'efficacité du développement, plusieurs extensions ont été installées dans chacun des environnements de développement.
+
+\textbf{Pour IntelliJ IDEA (Backend) :}
+\begin{itemize}
+
+\item Node.js :
+Cette extension a été installée pour fournir un support complet pour le développement en Node.js, facilitant l'exécution et le débogage des scripts.
+\item Database Navigator :
+Cette extension permet une interaction directe avec la base de données PostgreSQL, simplifiant les opérations de gestion des données.
+\end{itemize}
+
+\textbf{Pour Visual Studio Code (Frontend) :}
+\begin{itemize}
+ 
+\item ESLint : 
+Installée pour assurer la qualité et la cohérence du code JavaScript/TypeScript en vérifiant les erreurs et les problèmes de style.
+\item Prettier : 
+Cette extension permet le formatage automatique du code, garantissant une présentation uniforme du code source.
+\item Live Server:
+Installée pour permettre un rechargement rapide des modifications du frontend, facilitant le développement en temps réel.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+\section{Backend: Configuration et Implémentation des API}
+
+\subsection{Structure du projet Node.js}
+
+
+\subsubsection{ Organisation des fichiers et des dossiers}
+
+L'organisation des fichiers et des dossiers dans un projet Node.js est essentielle pour maintenir un code propre, bien structuré et facile à gérer. Pour le projet nommé "eREDAL project", nous avons suivi une convention standard pour organiser les fichiers et dossiers afin de séparer clairement les différentes responsabilités et fonctionnalités.
+
+\textbf{- Dossier racine} : Le dossier racine du projet contient les fichiers de configuration essentiels, notamment `package.json`, qui gère les dépendances du projet, et `server.js`, le fichier principal de lancement du serveur.
+
+\textbf{- Dossier `client`}: Ce sous-dossier contient tous les fichiers relatifs au frontend du projet, développé en React.js. 
+  - `public/` : Contient les fichiers publics accessibles, comme `index.html`.
+  - `src/` : Contient les composants React, les fichiers de styles, et les autres fichiers JavaScript nécessaires pour le frontend.
+
+\textbf{- Dossier `server`} : Ce sous-dossier contient tous les fichiers relatifs au backend du projet, développé en Node.js avec Express.
+  - `controllers/` : Contient les fichiers contrôleurs qui gèrent les requêtes et réponses de l'application.
+  - `models/` : Contient les fichiers de modèles de données, généralement utilisés pour définir les schémas de base de données.
+  - `routes/` : Contient les fichiers de routage, qui définissent les endpoints de l'API.
+  - `middleware/` : Contient les fichiers middleware utilisés pour des traitements intermédiaires sur les requêtes.
+  - `config/` : Contient les fichiers de configuration, comme les configurations de base de données.
+  - `uploads/` : Contient les fichiers téléchargés par les utilisateurs.
+
+Voici une représentation de la structure des dossiers :
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=9cm]{images-REDAL/Screenshot 2024-08-04 041835.png}
+\end{center}
+\caption{structure des fichiers backend - server -}
+\end{figure}
+
+
+
+\subsubsection{Principaux modules et packages utilisés}
+
+Le projet "eREDAL project" utilise plusieurs modules et packages pour faciliter le développement et améliorer les fonctionnalités du backend. Voici une description des principaux modules et packages utilisés :
+
+\textbf{- Express :} Un framework web minimaliste et flexible pour Node.js, utilisé pour créer notre serveur web et gérer les routes et les requêtes HTTP.
+
+
+
+\textbf{- Body-Parser :} Middleware pour analyser les corps des requêtes HTTP entrantes et les rendre accessibles sous `req.body`.
+
+
+\textbf{- Cors :} Middleware pour activer les requêtes CORS (Cross-Origin Resource Sharing), permettant à notre frontend d'accéder aux ressources du backend.
+
+
+\textbf{- Dotenv :} Module pour charger les variables d'environnement à partir d'un fichier `.env`, permettant de stocker les configurations sensibles de manière sécurisée.
+
+\textbf{- Multer :} Middleware pour le traitement des téléchargements de fichiers, configuré pour stocker les fichiers dans le dossier `uploads`.
+
+
+
+\textbf{- Docusign-esign :} SDK pour intégrer les fonctionnalités de signature électronique de DocuSign dans notre application.
+
+
+\textbf{- Pg :} Client PostgreSQL pour Node.js, utilisé pour se connecter et interagir avec notre base de données PostgreSQL.
+
+
+
+
+\textbf{- Node-cron :} Module pour planifier des tâches périodiques (cron jobs) dans notre application, utilisé pour des tâches automatisées.
+
+
+Cette organisation et l'utilisation de ces modules permettent de maintenir un code propre, modulable et facile à maintenir, tout en tirant parti des puissantes fonctionnalités offertes par Node.js et ses packages associés.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Implémentation del'api et des endpoints}
+\subsection{Configuration du REST API DE DOCUSIGN}
+Avant de commencer à coder, il est impératif de créer un compte développeur sur DocuSign pour obtenir les clés API et les IDs nécessaires à l'utilisation des services de DocuSign. Tout d'abord, accédez au site DocuSign Developer à l'adresse suivante : DocuSign Developer. 
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18cm]{images-REDAL/Screenshot 2024-08-04 173656.png}
+\end{center}
+\caption{Interface Docusign Developper}
+\end{figure}
+
+
+
+
+
+
+
+Inscrivez-vous et créez un compte développeur. Une fois le compte créé, accédez à la section "API and Keys" du tableau de bord. Vous y trouverez les informations essentielles telles que l'Integration Key (Clé d'intégration), le User ID (ID utilisateur), et le Account ID (ID du compte). Notez ces informations, car elles seront nécessaires pour configurer votre environnement de développement.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=17cm]{images-REDAL/Screenshot 2024-08-04 173900.png}
+\end{center}
+\caption{API and Keys's interface}
+\end{figure}
+
+
+
+
+Ensuite, créez un fichier nommé .env à la racine de votre projet Node.js pour stocker les clés API de manière sécurisée. Ce fichier contiendra les informations suivantes :
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-04 174837.png}
+\end{center}
+\caption{Le contenu du fichier (.env) }
+\end{figure}
+
+\subsection{ Utilisation du JSON Web Token (JWT) avec DocuSign}
+
+\subsubsection{Introduction au JSON Web Token (JWT)}
+Le JSON Web Token (JWT) est un standard ouvert (RFC 7519) qui définit un moyen compact et sécurisé de transmettre des informations entre parties sous la forme d'un objet JSON. Les JWT sont largement utilisés pour l'authentification et l'autorisation dans les applications web modernes, y compris celles qui intègrent des services tiers comme DocuSign.
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=7cm]{images-REDAL/png-transparent-jwt-io-json-web-token-hd-logo.png}
+\end{center}
+\caption{Le logo de JWT   }
+\end{figure}
+
+Un JWT est composé de trois parties distinctes : l'en-tête (header), la charge utile (payload) et la signature (signature). Ces parties sont encodées en Base64 et séparées par des points (.). Voici un exemple de JWT :
+
+
+\textbf{- Header : } contient des informations sur le type de token et l'algorithme de signature utilisé (par exemple, HMAC SHA256).
+
+\textbf{- Payload : } contient les déclarations (claims) qui sont les informations que l'on veut transmettre (par exemple, l'identifiant de l'utilisateur).
+
+\textbf{- Signature : } permet de vérifier que le contenu du token n'a pas été altéré. Elle est générée en signant l'en-tête et la charge utile avec une clé secrète ou un certificat.
+
+\subsubsection{ JWT pour l'Authentification avec DocuSign}
+DocuSign utilise JWT pour permettre aux applications d'accéder à son API de manière sécurisée. L'authentification basée sur JWT offre plusieurs avantages par rapport à d'autres méthodes d'authentification :
+
+\begin{itemize}
+
+\item Sécurité : Les tokens JWT sont signés et peuvent être chiffrés, ce qui garantit que les informations transmises sont sécurisées et n'ont pas été altérées.
+\item Stateless : Les JWT ne nécessitent pas de session côté serveur, ce qui réduit la charge sur le serveur et simplifie l'architecture de l'application.
+\item Durée de Vie : Les tokens JWT ont une durée de vie limitée, ce qui réduit les risques de sécurité en cas de compromission d'un token.
+\end{itemize}
+Pour utiliser JWT avec DocuSign, vous devez suivre les étapes suivantes :
+
+\textbf{ * Créer une Clé Privée et Publique :} Générer une paire de clés RSA. La clé privée sera utilisée pour signer les tokens JWT, tandis que la clé publique sera enregistrée sur DocuSign pour vérifier les signatures.
+
+\textbf{ * Configurer l'Application DocuSign :} Enregistrer votre application sur le portail développeur de DocuSign et ajouter la clé publique.
+
+\textbf{* Générer le Token JWT : } Utiliser la clé privée pour générer un token JWT contenant les informations d'authentification nécessaires.
+
+\textbf{ * Obtenir un Token d'Accès : }Envoyer le token JWT à DocuSign pour obtenir un token d'accès, qui sera utilisé pour appeler les API DocuSign.
+
+\subsubsection{Implémentation de JWT dans mon Projet}
+Dans mon projet, l'utilisation de JWT pour l'authentification avec DocuSign permet de gérer les sessions de manière sécurisée et efficace. Voici comment j'ai pu implémenter cela dans mon application Node.js.
+
+\textbf{Étape 1 : Générer une Clé Privée et Publique}
+
+
+Accédez au portail développeur de DocuSign et enregistrez votre application. Ajoutez la clé publique générée dans la section appropriée.
+
+\textbf{Étape 3 : Générer le Token JWT}
+
+Voici un exemple de code pour générer un token JWT en utilisant la bibliothèque jsonwebtoken en Node.js :
+
+
+\textbf{Étape 4 : Obtenir un Token d'Accès}
+
+Envoyez le token JWT à DocuSign pour obtenir un token d'accès. Cela peut être fait avec la bibliothèque docusign-esign :
+
+
+Cette fonction vérifie si un token d'accès valide est déjà stocké dans la session de l'utilisateur. Si le token est expiré ou inexistant, elle génère un nouveau token JWT et obtient un nouveau token d'accès depuis DocuSign.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=17cm]{images-REDAL/jwt.png}
+\end{center}
+\caption{Diagramme de sequence pour la verfication du token JWT  }
+\end{figure}
+
+\subsubsection{Avantages pour mon Projet}
+L'utilisation de JWT pour l'authentification avec DocuSign présente plusieurs avantages pour votre projet :
+
+\textbf{Sécurité Renforcée :}
+La signature des tokens JWT avec une clé privée assure que les informations transmises sont sécurisées et n'ont pas été altérées.
+
+\textbf{Gestion Simplifiée des Sessions :}
+Les tokens JWT permettent de gérer les sessions de manière stateless, réduisant ainsi la charge sur le serveur et simplifiant l'architecture de l'application.
+
+\textbf{Flexibilité et Évolutivité :}
+L'utilisation de JWT permet de facilement intégrer d'autres services tiers qui supportent l'authentification basée sur JWT, rendant votre application plus flexible et évolutive.
+
+\textbf{Conformité aux Normes : }
+L'utilisation de JWT, qui est un standard ouvert, assure la conformité aux meilleures pratiques de l'industrie en matière de sécurité et d'authentification.
+
+En résumé, l'intégration de JWT avec DocuSign dans mon projet de signature de documents améliore non seulement la sécurité et l'efficacité de l'authentification, mais aussi la flexibilité et l'évolutivité de votre application, rendant celle-ci plus robuste et prête pour de futures expansions.
+
+
+\subsection{ Choix de la Signature à Distance (Remote Signing)}
+
+Dans le cadre de l'intégration de DocuSign pour la gestion des signatures électroniques au sein du projet, le choix de la signature à distance (Remote Signing) s'est avéré être la solution la plus adaptée. Ce choix s'appuie sur plusieurs avantages spécifiques à cette méthode par rapport à l'Embedded Signing, ainsi que sur la manière dont elle répond aux besoins et aux contraintes du projet.
+
+\subsubsection{Avantages de la Signature à Distance}
+La signature à distance, également connue sous le nom de Remote Signing, permet aux utilisateurs de signer des documents électroniquement sans avoir à accéder directement à l'application où le document a été généré. Ce mode de signature offre une flexibilité accrue, permettant aux signataires de valider les documents depuis n'importe quel appareil connecté à Internet, ce qui est particulièrement avantageux dans un contexte professionnel où les utilisateurs peuvent être dispersés géographiquement.
+
+\textbf{Accessibilité et Flexibilité :} La signature à distance ne nécessite pas que les signataires soient présents dans le même espace physique ou qu'ils aient accès à un poste de travail spécifique. Cela facilite la collaboration et accélère les processus de validation, car les documents peuvent être signés à tout moment et de n'importe où.
+
+\textbf{Simplicité d'Utilisation : } Le processus de signature à distance est intuitif et simple pour les utilisateurs. Ils reçoivent une notification par email les invitant à signer le document. En suivant un lien sécurisé, ils accèdent au document, visualisent les champs à signer et complètent le processus en quelques clics.
+
+\textbf{Sécurité :} DocuSign assure un haut niveau de sécurité pour la signature à distance, utilisant des protocoles de cryptage avancés et des mesures d'authentification robustes pour garantir l'intégrité des documents et l'identité des signataires.
+
+\textbf{Suivi et Audit : } Chaque étape du processus de signature est tracée et enregistrée, fournissant un journal d'audit complet qui permet de vérifier l'authenticité des signatures et de répondre aux exigences de conformité réglementaire.
+
+
+
+
+\subsection{Implémentation des endpoints}
+
+L'implémentation de l'API de DocuSign est une étape cruciale dans l'intégration des fonctionnalités de signature électronique dans notre projet. Cette section décrit en détail les différentes étapes de l'intégration, en mettant en avant les endpoints créés pour interagir avec l'API de DocuSign, ainsi que le code et les concepts sous-jacents.
+
+\subsubsection{Configuration Initiale}
+
+La première étape de l'intégration consiste à configurer l'accès à l'API de DocuSign. Pour cela, nous avons créé un fichier `.env` contenant les identifiants nécessaires :
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-04 174837.png}
+\end{center}
+\caption{Le contenu du fichier (.env) }
+\end{figure}
+
+
+
+Ces informations sont ensuite utilisées pour configurer l'API DocuSign dans notre application Node.js.
+
+
+
+\subsubsection{Endpoint pour Vérifier le Token}
+
+Afin d'assurer que chaque appel à l'API DocuSign est sécurisé, nous avons créé une fonction `checkToken` qui vérifie la validité du token d'accès et le renouvelle si nécessaire.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-04 185448.png}
+\end{center}
+\caption{Fonction check Token}
+\end{figure}
+
+
+Cette fonction utilise le JSON Web Token (JWT) pour authentifier l'utilisateur auprès de DocuSign et renouveler le token si nécessaire. Elle garantit que les appels API sont effectués avec des tokens valides, évitant ainsi les erreurs d'authentification.
+
+\subsubsection{ Création et Envoi d'Enveloppes}
+
+L'une des principales fonctionnalités de notre intégration est la création et l'envoi d'enveloppes contenant les documents à signer. Pour ce faire, nous avons implémenté deux fonctions : \textit{`getEnvelopesApi`} et \textit{`makeEnvelopeRem`}.
+
+\textbf{Initialisation de l'API d'Enveloppes}
+
+La fonction `getEnvelopesApi` initialise l'API d'enveloppes avec le token d'accès :
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-04 185947.png}
+\end{center}
+\caption{Fonction "getEnvelopesApi"}
+\end{figure}
+
+
+
+Cette fonction configure le client API de DocuSign avec le token d'accès, permettant ainsi d'effectuer des opérations sécurisées sur les enveloppes.
+
+\newpage
+\textbf{ Création de l'Enveloppe}
+
+La fonction `makeEnvelopeRem` crée une enveloppe contenant le document à signer et les informations des signataires :
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{images-REDAL/Screenshot 2024-08-04 190401.png}
+\end{center}
+\caption{Fonction "makeEnvelopeRem" }
+\end{figure}
+
+
+Cette fonction lit le document à partir du système de fichiers, le convertit en base64, et crée un objet `EnvelopeDefinition` contenant le document et les informations des signataires. Les signataires sont configurés avec leurs coordonnées et leur ordre de signature, puis l'enveloppe est envoyée avec le statut `sent`.
+
+\subsubsection{ Endpoint pour Créer et Envoyer des Enveloppes}
+
+Enfin, nous avons créé un endpoint pour permettre aux utilisateurs de notre application de créer et envoyer des enveloppes via l'API DocuSign. Cet endpoint utilise les fonctions précédemment définies pour gérer le processus de création et d'envoi des enveloppes.
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{images-REDAL/Screenshot 2024-08-04 191020.png}
+\end{center}
+\caption{Endpoint /sendEnvelope}
+\end{figure}
+
+Cet endpoint `/sendEnvelope` reçoit les informations nécessaires à la création de l'enveloppe (sujet, message, destinataires, chemin du fichier) à partir de la requête POST. Il appelle les fonctions `checkToken`, `getEnvelopesApi` et `makeEnvelopeRem` pour créer et envoyer l'enveloppe via l'API DocuSign, puis renvoie l'ID et le statut de l'enveloppe en réponse.
+
+\subsubsection{Endpoint pour Vérifier le Statut d'une Enveloppe}
+
+Un autre aspect essentiel de l'intégration de DocuSign est la possibilité de vérifier le statut des enveloppes envoyées. Pour cela, nous avons créé un endpoint qui permet de récupérer le statut d'une enveloppe en utilisant l'API de DocuSign.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18cm]{images-REDAL/Screenshot 2024-08-04 191309.png}
+\end{center}
+\caption{Endpoint pour /api/documents/status}
+\end{figure}
+
+Cet endpoint `/api/documents/status` prend l'ID de l'enveloppe en paramètre de la requête GET. Il utilise les fonctions `checkToken` et `getEnvelopesApi` pour s'assurer que le token est valide et obtenir l'instance de l'API des enveloppes, puis appelle `getEnvelope` pour récupérer le statut de l'enveloppe spécifiée. Le statut de l'enveloppe est ensuite renvoyé en réponse.
+
+
+L'implémentation de l'API de DocuSign dans notre projet permet une gestion efficace et sécurisée des signatures électroniques. En utilisant les endpoints créés, nous avons automatisé le processus de création et d'envoi des documents à signer, tout en garantissant un haut niveau de sécurité et de conformité. Cette intégration offre une solution robuste et flexible, adaptée aux besoins des utilisateurs et aux exigences du projet. De plus, la possibilité de vérifier le statut des enveloppes en temps réel améliore considérablement l'expérience utilisateur en fournissant des mises à jour sur l'état des signatures.
+
+
+
+\subsection{Connexion à la base de données PostgreSQL}
+\subsubsection{Configuration de la Connexion}
+Pour notre projet, nous avons choisi PostgreSQL comme système de gestion de base de données relationnelle (SGBDR). PostgreSQL est reconnu pour sa robustesse, sa conformité aux standards SQL, et ses capacités avancées de gestion des transactions. Il offre également une extensibilité grâce à ses nombreuses fonctionnalités, ce qui le rend idéal pour des applications nécessitant des opérations complexes sur les données.
+
+\subsubsection{Étapes de Configuration}
+\textbf{Installation des Bibliothèques PostgreSQL :}
+La première étape consiste à installer la bibliothèque pg qui permet d'interagir avec PostgreSQL depuis Node.js.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=8cm]{images-REDAL/Screenshot 2024-08-05 011332.png}
+\end{center}
+\caption{installation de la bilblio pg}
+\end{figure}
+
+
+
+\textbf{Configuration de la Connexion à la Base de Données :}
+Nous avons créé un fichier db.js pour gérer la connexion à PostgreSQL en utilisant le module pg. Ce fichier configure un pool de connexions à PostgreSQL, ce qui permet une gestion efficace et sécurisée des connexions à la base de données.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{images-REDAL/Screenshot 2024-08-05 011553.png}
+\end{center}
+\caption{connexion a PostgreSQL}
+\end{figure}
+
+\newpage
+Nous avons utilisé un fichier .env pour stocker les informations sensibles telles que les identifiants de connexion à la base de données :
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=9cm]{images-REDAL/Screenshot 2024-08-05 011746.png}
+\end{center}
+\caption{identifiants PostgreSQL}
+\end{figure}
+
+\textbf{Création des Tables de la Base de Données :}
+Avant de lancer le serveur, il est nécessaire de créer les tables dans PostgreSQL. Nous avons utilisé les commandes SQL suivantes pour créer les tables emails et recipients :
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{images-REDAL/Screenshot 2024-08-05 012844.png}
+\end{center}
+\caption{Creation des tables a PostgreSQL}
+\end{figure}
+
+
+La table recipients contient les informations sur les destinataires des courriels, telles que leur nom, email, rôle et ordre de signature. La table emails stocke les informations sur les courriels envoyés, y compris le sujet, le message, les informations sur l'expéditeur, le chemin du fichier joint, le statut de l'email, et un indicateur indiquant si l'email a été ouvert.
+
+Pour créer ces tables, nous avons utilisé l'interface en ligne de commande psql ou un outil GUI comme pgAdmin.
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18cm]{images-REDAL/Screenshot 2024-08-05 013119.png}
+\end{center}
+\caption{Table "email" pour la BD (email system)}
+\end{figure}
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18cm]{images-REDAL/Screenshot 2024-08-05 013233.png}
+\end{center}
+\caption{Table "recipients" pour la BD (email system)}
+\end{figure}
+
+
+Opérations CRUD (Create, Read, Update, Delete)
+Pour interagir avec les tables emails et recipients, nous avons implémenté des opérations CRUD dans le backend de notre application.
+
+Create (Créer) :
+Pour ajouter de nouvelles entrées dans les tables emails et recipients, nous avons créé des fonctions pour insérer des données dans ces tables.
+
+
+Read (Lire) :
+Pour lire les données existantes dans les tables, nous avons créé des fonctions pour récupérer les entrées.
+
+Update (Mettre à Jour) :
+Pour mettre à jour les données existantes, nous avons créé des fonctions pour modifier les entrées spécifiques dans les tables.
+
+Delete (Supprimer) :
+Enfin, pour supprimer des entrées dans les tables, nous avons créé des fonctions pour retirer des données spécifiques.
+
+
+Conclusion
+L'intégration de PostgreSQL dans notre projet nous a permis de gérer efficacement les données relatives aux emails et aux destinataires. En utilisant les opérations CRUD, nous avons pu créer, lire, mettre à jour et supprimer des entrées dans notre base de données, offrant ainsi une solution complète et flexible pour la gestion des données. L'utilisation de PostgreSQL garantit la fiabilité et la performance de notre application, tout en assurant la sécurité des informations sensibles.
+
+
+
+
+
+\subsection{Phase de test avec postman}
+\subsubsection{Tester l'envoi de document}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18cm]{images-REDAL/Screenshot 2024-08-05 020508.png}
+\end{center}
+\caption{Table "recipients" pour la BD (email system)}
+\end{figure}
+
+\subsubsection{Tester la mise à jour du statut du document}
+
+\section{Frontend}
+
+\subsection{Structure du projet React.js}
+Cette section explique l'architecture globale de votre projet React.js, en soulignant l'organisation des fichiers et des dossiers, les composants principaux, et la connexion entre le frontend et le backend.
+
+\subsubsection{Organisation des composants et des dossiers}
+
+
+Le projet est structuré de manière modulaire pour faciliter la gestion et la réutilisation des composants. Voici une vue d'ensemble de la structure des dossiers :
+
+\textbf{- src/ :} Il s'agit du dossier principal contenant tous les fichiers source de l'application.
+
+\textbf{- assets/ :} Contient les ressources comme les images, les fichiers CSS, et autres.
+
+\textbf{- components/ :} Regroupe tous les composants React réutilisables de l'application, notamment :
+
+\quad\textit{- CongratsPage.js :} La page affichée après la réussite d'une action.
+
+\quad\textit{- DashboardPage.js :} La page principale du tableau de bord de l'application.
+
+\quad\textit{- ForgotPasswordPage.js :} Page pour la récupération de mot de passe.
+
+\quad\textit{- Header.js :} Le composant d'en-tête utilisé sur différentes pages.
+
+\quad\textit{- HomePage.js :} La page d'accueil de l'application.
+
+\quad\textit{- LoginPage.js :} La page de connexion pour l'authentification des utilisateurs.
+
+\quad\textit{- OverviewPage.js :} Affiche un aperçu du compte ou de l'état du projet de l'utilisateur.
+
+\quad\textit{RecipientsPage.js :} Gère la liste des destinataires pour la signature de documents.
+
+\quad\textit{- RegisterPage.js :} La page d'inscription des utilisateurs.
+
+\quad\textit{- SendEmailPage.js :} La page où les utilisateurs peuvent envoyer des documents par email pour signature.
+
+\quad\textit{- StatusPage.js :} Affiche l'état des documents envoyés pour signature.
+
+\quad\textit{- UploadDocumentsPage.js :} Page pour télécharger les documents à signer.
+
+Illustration :
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=9cm]{images-REDAL/Screenshot 2024-08-08 162206.png}
+\end{center}
+\caption{la structure des dossiers du projet "React.js"}
+\end{figure}
+
+Un schéma optionnel montrant la relation entre les composants clés, si pertinent. 
+
+
+\subsubsection{Principaux packages et bibliothèques utilisés}
+ 
+
+Le projet utilise plusieurs packages et bibliothèques essentiels pour améliorer les fonctionnalités et simplifier le développement. Voici les principaux packages utilisés :
+
+React Router : Gère la navigation entre les différentes pages de l'application.
+Axios : Utilisé pour effectuer des requêtes API vers le backend.
+dotenv : Gère les variables d'environnement, permettant de gérer en toute sécurité l'URL de l'API backend et d'autres configurations.
+Illustration :
+
+Une capture d'écran du fichier package.json montrant les dépendances.
+Des extraits de code démontrant l'intégration de ces bibliothèques dans votre projet.
+
+\subsubsection{Connexion Backend et Frontend}
+
+Dans le cadre de ce projet, la communication entre le frontend et le backend a été réalisée via des requêtes HTTP. Le frontend, développé en React.js, interagit avec le backend, codé en Node.js, en utilisant la bibliothèque **Axios** pour effectuer ces requêtes. Cette connexion permet d'envoyer des données depuis l'interface utilisateur (frontend) vers le serveur (backend) et de recevoir les réponses correspondantes, garantissant ainsi une interaction fluide entre les deux couches de l'application.
+
+\textbf{1. Utilisation d'Axios pour les Requêtes HTTP }
+
+Le frontend utilise **Axios**, une bibliothèque JavaScript populaire, pour initier des requêtes HTTP (GET, POST, PUT, DELETE) vers le backend. Axios permet de gérer efficacement la communication asynchrone entre le frontend et le backend, assurant le transfert sécurisé des données.
+
+
+\textbf{2. **Envoi de Données au Backend}
+
+Les données saisies par l'utilisateur dans les formulaires du frontend sont envoyées au backend via des requêtes POST. Par exemple, lors de la création d'un document à signer ou de l'ajout de destinataires, le frontend envoie les informations au backend, qui les traite et les enregistre dans la base de données PostgreSQL.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-09 001112.png}
+\end{center}
+\caption{Exemple de requête POST pour envoyer les informations des destinataires au backend}
+\end{figure}
+
+\textbf{3. Réception des Réponses du Backend}
+
+Après le traitement des données par le backend, une réponse est renvoyée au frontend. Cette réponse peut inclure un message de confirmation, les données mises à jour, ou un message d'erreur en cas de problème. Le frontend utilise cette réponse pour mettre à jour l'interface utilisateur en conséquence, par exemple en affichant un message de succès ou en redirigeant l'utilisateur vers une autre page.
+
+\textbf{4. Gestion de la Navigation et de l'État}
+
+Pour gérer la navigation entre les différentes pages et les états locaux de l'application, le frontend utilise `useNavigate` de React Router ainsi que `useState` pour le stockage des données temporaires. Cette gestion d'état permet d'assurer que l'application réagit dynamiquement aux données reçues du backend, offrant ainsi une expérience utilisateur cohérente et fluide.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-09 001246.png}
+\end{center}
+\caption{Exemple de redirection après une opération réussie}
+\end{figure}
+
+\textbf{ Conclusion}
+
+La connexion entre le frontend et le backend dans ce projet est essentielle pour le bon fonctionnement de l'application. Grâce à l'utilisation d'Axios pour les requêtes HTTP, le frontend peut communiquer efficacement avec le backend, permettant ainsi la gestion des données, la signature électronique des documents, et l'interaction utilisateur. Cette architecture garantit une séparation claire des responsabilités entre le frontend et le backend, tout en assurant une communication fluide entre ces deux composants.
+
+
+
+
+
+\newpage
+\subsection{Présentation de l'Application \textbf{eREDAL signature}}
+
+L'application eREDAL signature est une plateforme développée pour faciliter la gestion et l'envoi de documents à signer électroniquement au sein de l'entreprise REDAL. Cette application permet aux utilisateurs de créer, envoyer, et suivre l'état des documents signés, tout en assurant une traçabilité et une sécurité accrues grâce à l'intégration des signatures électroniques via l'API DocuSign. L'application est conçue pour être intuitive et efficace, optimisant ainsi les processus internes de l'entreprise.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-03 172856.png}
+\end{center}
+\caption{La page d'accueil de notre appli 'eREDAL signature'}
+\end{figure}
+
+La page d'accueil de l'application offre un aperçu des fonctionnalités principales, permettant aux utilisateurs d'accéder rapidement aux options d'envoi de documents, de suivi des signatures, et de gestion des destinataires.
+
+\subsubsection{Authentification à l'App}
+
+Pour accéder aux fonctionnalités de eREDAL signature, les utilisateurs doivent s'authentifier via la page de connexion. Cette étape assure que seuls les utilisateurs autorisés peuvent utiliser l'application.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{images-REDAL/Screenshot 2024-08-03 172757.png}
+\end{center}
+\caption{Login page }
+\end{figure}
+
+En cas de mot de passe oublié, une page dédiée permet aux utilisateurs de réinitialiser leurs identifiants en toute sécurité.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{images-REDAL/Screenshot 2024-08-03 173901.png}
+\end{center}
+\caption{Forgotten password page}
+\end{figure}
+
+Les nouveaux utilisateurs peuvent également s'enregistrer via une page dédiée qui collecte les informations nécessaires à la création de leur compte.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{images-REDAL/Screenshot 2024-08-03 173833.png}
+\end{center}
+\caption{Register page}
+\end{figure}
+
+\subsubsection{Formulaires pour l'envoi de documents}
+
+L'envoi de documents à signer se fait via une série de formulaires organisés en plusieurs étapes. Cette section guide l'utilisateur à travers le processus, depuis l'insertion des informations de base du document jusqu'au téléchargement de celui-ci.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-03 173121.png}
+\end{center}
+\caption{1ère Étape : Remplissage du sujet et du message du mail}
+\end{figure}
+
+La première étape consiste à remplir le sujet et le message du courriel qui accompagnera le document à signer.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-03 173302.png}
+\end{center}
+\caption{2ème Étape: Remplissage des récipients à signer le document en ordre}
+\end{figure}
+
+Ensuite, l'utilisateur spécifie les destinataires du document ainsi que l'ordre dans lequel ceux-ci devront apposer leur signature.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-03 173336.png}
+\end{center}
+\caption{3ème Étape: Charger le document à signer électroniquement}
+\end{figure}
+
+La dernière étape du processus consiste à charger le document qui sera signé électroniquement par les destinataires préalablement définis.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/Screenshot 2024-08-03 173408.png}
+\end{center}
+\caption{Overview page}
+\end{figure}
+
+Une fois toutes les informations renseignées, une page récapitulative permet à l'utilisateur de vérifier les détails avant d'envoyer le document pour signature.
+
+\subsubsection{Tableaux de bord pour le suivi de l'état des documents}
+
+L'application offre également un tableau de bord interactif qui permet de suivre l'état des documents envoyés. Les utilisateurs peuvent voir en un coup d'œil quels documents ont été signés, lesquels sont en attente, et prendre des mesures si nécessaire.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18cm]{images-REDAL/Screenshot 2024-08-03 173529.png}
+\end{center}
+\caption{Dashboard de tous les mails envoyés et leurs états}
+\end{figure}
+
+Ce tableau de bord est essentiel pour assurer une gestion fluide et efficace des processus de signature au sein de l'entreprise.
+
+
+
+
+
+\section{Tests de l'Application}
+
+\subsection{Tests et validation}
+
+Pour garantir le bon fonctionnement et la fiabilité de l'application eREDAL signature, plusieurs tests ont été effectués tout au long du processus de développement. Ces tests ont couvert divers aspects de l'application, de la réception des documents à la signature électronique, en passant par la confirmation des signatures.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 174127.png}
+\end{center}
+\caption{Overview sur la forme du mail reçu par le récipient}
+\end{figure}
+
+La première étape des tests a consisté à vérifier la réception des emails par les destinataires. Cette capture d'écran montre l'aperçu du format du mail reçu, incluant les détails pertinents du document à signer.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 174232.png}
+\end{center}
+\caption{Signature du document par Docusign}
+\end{figure}
+
+Ensuite, nous avons testé le processus de signature du document à l'aide de DocuSign. Cette capture montre le formulaire de signature où les signataires peuvent apposer leur signature électronique de manière sécurisée.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 174350.png}
+\end{center}
+\caption{Aperçu sur le processus de signature électronique par Docusign}
+\end{figure}
+
+L'aperçu du processus de signature électronique illustre les étapes suivies par les signataires, garantissant que chaque étape du processus est bien exécutée et documentée.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 174449.png}
+\end{center}
+\caption{Confirmation de la signature électronique - Pour le CEO}
+\end{figure}
+
+Les confirmations de signature électronique sont cruciales pour assurer que les documents sont validés correctement. Ce screenshot montre la confirmation de la signature pour le CEO, indiquant que le processus a été complété avec succès.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 175152.png}
+\end{center}
+\caption{Confirmation de la signature électronique - Pour le Directeur des Achats}
+\end{figure}
+
+De même, la confirmation de signature pour le Directeur des Achats est vérifiée, garantissant que chaque signataire reçoit la confirmation appropriée.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 175229.png}
+\end{center}
+\caption{La version finale du document bien signé envoyée vers le CC}
+\end{figure}
+
+Une fois le document signé, la version finale est envoyée au Centre de Contrôle (CC). Ce screenshot montre le document finalisé, prêt pour la distribution finale.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=14cm]{images-REDAL/Screenshot 2024-08-03 175358.png}
+\end{center}
+\caption{Exemple du document DAD REDAL après la signature numérique}
+\end{figure}
+
+Enfin, nous avons validé le document DAD REDAL après la signature numérique pour nous assurer que toutes les signatures sont correctement intégrées et que le document respecte les exigences de conformité.
+
+
+\newpage
+\subsection{Conclusion}
+
+En conclusion, les tests réalisés sur l'application eREDAL signature ont démontré que l'application fonctionne conformément aux spécifications et aux attentes. Tous les aspects critiques, de l'envoi des documents à la signature électronique et à la confirmation finale, ont été validés avec succès. Les résultats des tests montrent une intégration fluide et sécurisée des signatures électroniques, ce qui confirme l'efficacité de l'application dans le traitement des documents au sein de l'entreprise REDAL.
+
+Ces tests ont permis d'identifier et de résoudre les problèmes éventuels, assurant ainsi une expérience utilisateur optimale et un fonctionnement fiable de l'application. En fin de compte, l'application eREDAL signature répond aux besoins de l'entreprise en matière de gestion des signatures électroniques, offrant une solution robuste et efficace pour la gestion des documents numériques.
+
+
+
+
+
+
+
+
+
+
+
+\section{Conclusion}
+\quad Dans ce chapitre, nous avons détaillé l'ensemble des étapes de réalisation du projet "eREDAL signature", en mettant en lumière les différents aspects techniques et les choix technologiques effectués. Nous avons présenté les outils utilisés pour le développement backend et frontend, en expliquant les raisons de ces choix. L'implémentation des endpoints de notre API, ainsi que la connexion à la base de données PostgreSQL, ont été réalisées de manière à garantir une gestion efficace et sécurisée des signatures électroniques.
+
+En parallèle, l'architecture du frontend sous React.js a été soigneusement structurée pour assurer une organisation claire et une interaction fluide avec le backend. Chaque composant de l'application a été développé en tenant compte de la modularité et de la réutilisabilité, ce qui facilite l'évolution future de l'application. Enfin, les phases de test effectuées avec Postman ont permis de valider le bon fonctionnement des fonctionnalités critiques du système.
+
+Ce travail de développement a permis de concrétiser la vision initiale du projet, en offrant une solution robuste et flexible, adaptée aux besoins de l'entreprise REDAL et de ses utilisateurs.

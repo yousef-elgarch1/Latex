@@ -1,0 +1,277 @@
+
+Les principaux objectifs de ce chapitre sont les suivants :
+\begin{itemize}
+
+\item Analyse de l'Architecture du Système
+
+\item Conception du Backend et du Frontend
+
+\item Mise en Place de la Sécurité et de l'Authentification
+
+\item Élaboration du Schéma de la Base de Données
+
+\item Développement de la Stratégie de Déploiement et de l'Infrastructure
+
+\item Description des Flux de Travail
+
+\item Synthèse et Conclusion
+\end{itemize}
+\newpage
+\section{Introduction}
+Ce chapitre présente une vue d'ensemble de la conception et du développement du système de notre projet. Les principaux objectifs sont de fournir une analyse approfondie de l'architecture du système, de concevoir le backend et le frontend, de mettre en place des mesures de sécurité et d'authentification, d'élaborer le schéma de la base de données, de développer une stratégie de déploiement et d'infrastructure, de décrire les flux de travail et de conclure avec une synthèse des points clés.
+
+\section{ Analyse de l’Architecture du Système}
+\subsection{Vue d'Ensemble de l'Architecture}
+L'architecture globale de notre système est structurée pour assurer une interaction fluide entre les différentes composantes essentielles. Le backend, développé avec Node.js et Express.js, constitue le noyau du système, gérant les requêtes des utilisateurs et la logique métier. Le frontend, construit avec React.js, offre une interface utilisateur interactive et réactive. L'intégration avec l'API DocuSign permet de gérer les signatures électroniques de manière sécurisée. La base de données PostgreSQL stocke toutes les informations critiques, telles que les utilisateurs, les documents et les états de signature. Postman est utilisé pour tester les endpoints API et assurer leur bon fonctionnement. Un diagramme illustrant cette architecture globale sera inclus pour visualiser les interactions entre ces composants.
+
+
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=18.5cm]{images-REDAL/qqq.png}
+\end{center}
+\caption{Diagramme de l'Architecture Globale du projet}
+\end{figure}
+
+\newpage
+\subsection{Composants Principaux}
+\subsubsection{Backend}
+Node.js est un environnement d'exécution JavaScript conçu pour créer des applications réseau rapides et évolutives. Il utilise un modèle d'E/S non bloquant et orienté événements, ce qui le rend léger et efficace. Express.js est un framework web minimaliste pour Node.js, offrant des fonctionnalités robustes pour développer des applications web et mobiles.
+
+Utilisation dans le projet : Nous avons utilisé Node.js et Express.js pour développer le backend de notre système en raison de leur performance et de leur capacité à gérer des opérations asynchrones. Cette combinaison nous permet de traiter efficacement les requêtes utilisateur et d'interagir avec la base de données et les API externes.
+
+Pourquoi : Node.js et Express.js offrent une excellente performance pour les applications nécessitant de nombreuses opérations d'E/S. Leur architecture asynchrone permet de gérer un grand nombre de connexions simultanées sans bloquer le thread principal, ce qui est idéal pour notre application nécessitant des interactions fréquentes avec DocuSign et la base de données.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=7cm]{images-REDAL/node.jpeg}
+\end{center}
+\caption{Le logo de NodeJs + Express}
+\end{figure}
+
+
+\subsubsection{Frontend}
+React.js est une bibliothèque JavaScript pour la construction d'interfaces utilisateur. Elle permet de créer des composants réutilisables, facilitant ainsi le développement et la maintenance des applications web complexes.
+
+Utilisation dans le projet : Nous avons utilisé React.js pour développer le frontend de notre application, permettant de créer une interface utilisateur interactive et réactive. Les composants principaux incluent le tableau de bord, le formulaire d'envoi de documents, et la vue de statut des signatures.
+
+Pourquoi : React.js offre une modularité et une réutilisabilité des composants, ce qui accélère le développement et facilite la maintenance. De plus, sa capacité à gérer efficacement le DOM virtuel améliore les performances de l'application.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=6cm]{images-REDAL/react_logo_2.png}
+\end{center}
+\caption{Le logo de React Js}
+\end{figure}
+
+\subsubsection{API DocuSign}
+DocuSign est un service de signature électronique qui permet aux utilisateurs d'envoyer, de signer et de gérer des documents en ligne. L'API DocuSign offre des fonctionnalités pour intégrer ces services dans des applications tierces.
+
+Utilisation dans le projet : Nous avons intégré l'API DocuSign pour permettre aux utilisateurs d'envoyer des documents à signer, de recevoir des notifications de signature et de vérifier le statut des documents directement depuis notre interface.
+
+Pourquoi : L'API DocuSign fournit une solution complète et sécurisée pour la gestion des signatures électroniques, ce qui est essentiel pour notre projet. L'authentification OAuth2 avec DocuSign assure que seules les interactions autorisées peuvent se produire, renforçant la sécurité de notre système..
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=10cm]{images-REDAL/docusign.png}
+\end{center}
+\caption{Lellogo de DocuSign}
+\end{figure}
+
+
+\subsubsection{Base de Données PostgreSQL}
+PostgreSQL est un système de gestion de base de données relationnelle puissant et open-source. Il est réputé pour sa robustesse, ses performances et sa conformité aux standards SQL.
+
+Utilisation dans le projet : Nous avons utilisé PostgreSQL pour stocker toutes les informations essentielles du système, y compris les utilisateurs, les documents et les statuts de signature. Chaque table est conçue avec des relations claires pour assurer l'intégrité des données et faciliter les requêtes complexes.
+
+Pourquoi : PostgreSQL est choisi pour sa capacité à gérer des transactions complexes et à offrir des performances élevées dans des environnements de production. Sa conformité aux standards SQL et ses fonctionnalités avancées de gestion des données en font un choix idéal pour notre projet.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=5cm]{images-REDAL/postgres.jpeg}
+\end{center}
+\caption{logo de PostgreSQL}
+\end{figure}
+
+
+\subsubsection{Postman}
+Postman est un outil de collaboration pour le développement d'API. Il permet de tester, documenter et partager les API de manière efficace.
+
+Utilisation dans le projet : Nous avons utilisé Postman pour tester et documenter les interactions avec l'API DocuSign et les endpoints du backend. Il permet de simuler des requêtes et de vérifier les réponses, assurant ainsi que toutes les fonctionnalités du système fonctionnent comme prévu.
+
+Pourquoi : Postman facilite le processus de test et de validation des API, assurant que chaque endpoint fonctionne correctement avant le déploiement. Sa capacité à générer des collections de requêtes et des documentations détaillées aide à maintenir la qualité et la cohérence du développement.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=6cm]{images-REDAL/postman.png}
+\end{center}
+\caption{logo de Postman}
+\end{figure}
+
+\section{ Conception }
+\subsection{Diagramme de séquence}
+
+Un diagramme de séquence est utilisé pour représenter la séquence chronologique des échanges de messages entre les objets et l’acteur afin d’accomplir une tâche spécifique. Il met en évidence les objets impliqués dans l’exécution d’un cas d’utilisation et illustre les messages échangés entre eux dans un ordre temporel. En d’autres termes, le diagramme de séquence permet de visualiser l’interaction entre les différents acteurs et objets du système en montrant comment ils coopèrent pour atteindre un objectif commun.
+
+Dans notre projet, le diagramme de séquence illustre le processus d'envoi et de signature de documents via notre application. Ce diagramme montre comment les différents composants de notre système interagissent pour envoyer un email avec un document à signer, suivre le statut de la signature, et notifier l'expéditeur une fois le document signé.
+
+L'illustration suivante représente le diagramme de séquence de notre application :
+
+\begin{figure}[H]
+\begin{center}
+ \rotatebox{90}{\includegraphics[width=21cm]{images-REDAL/hseq.png}}
+\end{center}
+\caption{Diagramme de séquence}
+\end{figure}
+
+
+Le diagramme de séquence ci-dessous illustre le flux de communication entre l'expéditeur (Sender), l'interface web, le backend développé en Node.js avec Express, l'API DocuSign, et le service de messagerie électronique. Le processus commence par la création d'un email par l'expéditeur, contenant le sujet, le message, les destinataires, les rôles, l'ordre de signature, et le document à signer. L'interface web soumet ensuite les détails de l'email au backend, qui envoie le document à signer via l'API DocuSign. DocuSign envoie une demande de signature au destinataire, qui signe le document. Une fois signé, DocuSign notifie le backend, qui envoie le document signé à l'expéditeur via le service de messagerie électronique. Enfin, l'interface web met à jour le statut de l'email et l'affiche à l'expéditeur.
+
+
+Ce diagramme de séquence offre une vue claire et détaillée de l'interaction entre les différents composants de notre système, assurant ainsi une compréhension complète du processus de gestion des signatures électroniques dans notre application.
+
+\subsection{ Diagramme d’activité
+}
+
+Le diagramme d’activité est un type de diagramme UML qui représente le flux de travail ou les activités d’un système. Il décrit les différentes étapes ou actions qui se produisent au cours d’un processus et montre comment ces actions sont interconnectées. Les diagrammes d’activité sont utilisés pour modéliser des processus métier, des opérations de systèmes ou des algorithmes, en mettant l’accent sur le contrôle du flux et la séquence des actions. Ils aident à visualiser le comportement dynamique du système et à identifier les points de décision, les boucles, les parallélismes et les interactions entre les différents éléments du système.
+
+\subsubsection{ Création et Envoi d'un Document}
+L’illustration suivante représente le diagramme d’activité correspondant à la création et l’envoi d'un document pour signature électronique.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=13cm]{images-REDAL/activ1.png}
+\end{center}
+\caption{Diagramme d'activité :  Création et Envoi d'un Document }
+\end{figure}
+
+Cette figure illustre le processus de création et d'envoi d'un document à signer, en passant par plusieurs étapes critiques et en assurant la notification et la mise à jour du statut tout au long du processus.
+
+\subsubsection{Réception et Signature d'un Document}
+L’illustration suivante représente le diagramme d’activité correspondant à la réception et la signature d'un document.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=15cm]{images-REDAL/acti2.png}
+\end{center}
+\caption{Diagramme d'actvitie :  Réception et Signature d'un Document }
+\end{figure}
+
+
+Cette figure montre le processus de réception et de signature d'un document, en incluant les étapes de révision, de signature ou de demande de modifications.
+
+Ces diagrammes d’activité permettent de visualiser les différents processus dans notre système, identifiant clairement les points de décision, les interactions entre les différents éléments et les séquences d'actions nécessaires pour atteindre les objectifs du système.
+
+
+
+
+\subsection{Diagramme de classe}
+
+
+Le diagramme de classe est un type de diagramme UML qui représente la structure statique d'un système en modélisant ses classes, leurs attributs, méthodes et les relations entre elles. Ce diagramme aide à visualiser les objets du système et leurs interactions, facilitant ainsi la compréhension et la conception du modèle de données.
+
+Dans notre projet, le diagramme de classe inclut les principales classes suivantes : \textbf{Sender}, \textbf{Recipient}, \textbf{Email}, \textbf{Document}, \textbf{DocuSignAPI}, \textbf{Backend}, \textbf{EmailService}, et \textbf{WebInterface}. Chaque classe a des attributs et des méthodes spécifiques qui définissent son comportement et ses responsabilités. Les relations entre ces classes, comme l'héritage, l'association et la dépendance, sont également représentées pour montrer comment elles interagissent les unes avec les autres.
+
+
+\begin{figure}[H]
+\begin{center}
+ \rotatebox{90}{\includegraphics[width=20cm]{images-REDAL/class2.png}}
+\end{center}
+\caption{Diagramme de classe }
+\end{figure}
+
+
+\subsubsection{Explication}
+\begin{itemize}
+
+\item \textbf{Sender} : Classe représentant l'expéditeur des emails. Il peut créer un email avec sujet, message, destinataires, rôles, ordre, et document.
+\item \textbf{Recipient} : Classe représentant les destinataires des emails. Ils peuvent signer les documents.
+\item \textbf{Email}: Classe représentant les emails envoyés par les expéditeurs. Elle contient des informations sur le sujet, le message, l'expéditeur, les destinataires, le document, et le statut.
+\item \textbf{Document}: Classe représentant les documents à signer. Elle contient des informations sur le titre, le contenu et le statut.
+\item \textbf{DocuSignAPI} : Classe gérant l'intégration avec l'API DocuSign pour envoyer les documents et notifier le backend.
+\item\textbf{Backend} : Classe gérant la logique métier et les interactions entre les emails, les documents, DocuSign, et le service d'email.
+\item \textbf{EmailService} : Classe gérant l'envoi des emails et des documents signés.
+\item \textbf{WebInterface} : Classe représentant l'interface utilisateur qui soumet les détails des emails et affiche le statut des emails.
+\end{itemize}
+Ce diagramme de classe fournit une vue d'ensemble de la structure du système, montrant les classes principales et leurs relations, facilitant ainsi la conception et le développement du projet.
+
+\newpage
+
+\section{Apercu de l’architecture}
+\subsection{Architecture de haut niveau}
+
+
+L’architecture de haut niveau, également appelée High-Level Design (HLD), joue un rôle crucial dans la définition et la spécification des besoins fonctionnels du client. Elle offre une vue d’ensemble claire et structurée des interactions entre les différents composants du système, facilitant ainsi la compréhension et la communication des exigences du projet.
+
+En présentant les grandes lignes de l’architecture, le HLD permet aux parties prenantes de visualiser les flux de données, les processus clés et les points d’intégration essentiels. Cette approche méthodique aide à garantir que toutes les fonctionnalités requises sont correctement identifiées et spécifiées dès le départ, minimisant ainsi les risques de malentendus et d’erreurs au cours du développement. En outre, l’architecture de haut niveau sert de guide de référence tout au long du cycle de vie du projet, assurant une cohérence et un alignement constants avec les objectifs métiers du client. Elle facilite également l’évaluation de la faisabilité technique, la planification des ressources et l’identification des dépendances critiques, contribuant ainsi à la réussite globale du projet.
+
+
+\begin{figure}[H]
+\begin{center}
+ \rotatebox{90}{\includegraphics[width=22cm, height=6cm]{images-REDAL/arch ahut.png}}
+\end{center}
+\caption{Architecture de haut niveau}
+\end{figure}
+
+
+\subsection{ Architecture de la solution}
+
+Dans cette partie, nous examinerons l’architecture correspondant aux principaux processus de notre application, visualisant ainsi les différentes étapes par lesquelles les données transitent dans le flux.
+
+\subsection{ Envoi de documents pour signature}
+\begin{itemize}
+
+\item Initiation de la demande :
+Le processus commence par l'envoi d'une demande de signature depuis l'interface utilisateur.
+\item Traitement de la demande :
+Le backend reçoit la demande, traite les informations et prépare le document à être envoyé via l'API DocuSign.
+\item Envoi à DocuSign : 
+Le document est envoyé à DocuSign via l'API DocuSign.
+\item Notification des signataires :
+DocuSign notifie les signataires par email qu'un document est prêt à être signé.
+\item Signature du document:
+Les signataires accèdent au document via DocuSign, le signent et le soumettent.
+\item Mise à jour du statut :
+Une fois le document signé, DocuSign envoie une notification au backend qui met à jour le statut du document et notifie l'expéditeur via le service email.
+\item Affichage du statut :
+Le statut mis à jour du document est affiché dans l'interface web.
+\end{itemize}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=16cm]{images-REDAL/reqt.png}
+\end{center}
+\caption{flux de donnees Envoi demande de signature}
+\end{figure}
+
+
+\begin{itemize}
+
+
+\item Requête de statut:
+L'utilisateur envoie une requête depuis l'interface web pour vérifier le statut des documents envoyés.
+\item Traitement de la requête:
+Le backend interroge la base de données pour récupérer les statuts des documents.
+\item Réponse à la requête:
+Le backend envoie les informations de statut à l'interface web.
+\item Affichage des statuts: 
+Les statuts des documents sont affichés à l'utilisateur sur l'interface web.
+\end{itemize}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=16cm]{images-REDAL/reqt.png}
+\end{center}
+\caption{flux de donnees - Check Status}
+\end{figure}
+
+
+
+
+\subsection{Architecture de la solution}
+\section{Conclusion}
+\quad Vers la fin de ce chapitre, nous avons pu développer une vision détaillée de l’architecture de notre solution, en précisant le processus d'interaction entre ARAS et SPMAT ainsi que les étapes de déploiement continu. Nous allons exploiter ces informations pour choisir les outils appropriés qui nous aideront à réaliser et optimiser notre projet, assurant ainsi une intégration fluide et efficace.
+
+
+
+
